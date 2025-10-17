@@ -34,19 +34,27 @@ public class Reservation {
     }
 
     //Assim se calcula a duração em dias com base nas duas datas.
-    public long duration(){
+    public long duration() {
         long dif = checkOut.getTime() - checkIn.getTime();
         return TimeUnit.DAYS.convert(dif, TimeUnit.MILLISECONDS);
     }
 
-    public void updateDates(Date checkIn, Date checkOut){
+    public String updateDates(Date checkIn, Date checkOut) {
+        Date now = new Date();
+        if (checkIn.before(now) || checkOut.before(now)) {
+            return "Reservation dates for update must be future dates";
+        }
+        if (!checkOut.after(checkIn)) {
+            return "Check-out date must be after check-in date";
+        }
         this.checkIn = checkIn;
         this.checkOut = checkOut;
+        return null;
     }
 
     //Override sempre no toString
     @Override
-    public String toString(){
+    public String toString() {
         return "Room "
                 + roomNumber
                 + ", check-in: "
